@@ -15,9 +15,11 @@ cd lib/node_modules/an11ty
 
 npm i
 
+BETTERDIR=`pwd`
+
 # /Users/saibotsivad/.npm/_npx/16933/bin
 
-# PATH=$PATH:$DIR
+PATH=$PATH:$BETTERDIR/node_modules/.bin
 
 
 # WHEREISTHIS=`echo "console.log(require.resolve('a11ty'))" | node`
