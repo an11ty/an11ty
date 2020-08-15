@@ -27,8 +27,8 @@ function watch_site () {
 }
 
 function watch_eleventy () {
-	cd $SITEDIR
-	eleventy --watch --serve --input=_copy --output=_site
+	cd $SITEDIR/_copy
+	eleventy --watch --serve
 }
 
 function build () {
