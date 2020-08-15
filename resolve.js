@@ -1,1 +1,3 @@
-console.log(require.resolve('a11ty'))
+#!/usr/bin/env node
+
+console.log('-----------------------', require.resolve('ncp'))
