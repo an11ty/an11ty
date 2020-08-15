@@ -3,16 +3,23 @@
 # Make all the installed CLI tools available.
 # PATH=$PATH:./node_modules/.bin
 
-WHEREISTHIS=`echo "console.log(require.resolve('a11ty'))" | node`
 
-echo $WHEREISTHIS
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+echo $DIR
 
-WHEREISTHIS=`echo "console.log(require.resolve('ncp'))" | node`
+ls -l $DIR
 
-echo $WHEREISTHIS
 
-pwd
+# WHEREISTHIS=`echo "console.log(require.resolve('a11ty'))" | node`
 
-ls -l ./node_modules/.bin
+# echo $WHEREISTHIS
 
-ncp --version
+# WHEREISTHIS=`echo "console.log(require.resolve('ncp'))" | node`
+
+# echo $WHEREISTHIS
+
+# pwd
+
+# ls -l ./node_modules/.bin
+
+# ncp --version
