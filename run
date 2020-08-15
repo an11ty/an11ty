@@ -44,7 +44,7 @@ function build () {
 	npm ci
 	echo "Finally building... $SITEDIR"
 	cd $SITEDIR
-	eleventy --input=_copy --output=_site
+	eleventy --input=_copy --output=_site --config=_copy/.eleventy.js
 }
 
 function dev () {
