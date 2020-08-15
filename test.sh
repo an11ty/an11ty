@@ -11,8 +11,7 @@ echo $DIR
 
 cd $DIR
 cd ..
-cd lib
-cd node_modules
+cd lib/node_modules/an11ty/node_modules
 ls -l
 
 # /Users/saibotsivad/.npm/_npx/16933/bin
