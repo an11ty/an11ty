@@ -1,6 +1,6 @@
 {
   "name": "an11ty",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Easiest way to start using an 11ty site.",
   "bin": "./test.sh",
   "repository": {
