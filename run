@@ -12,13 +12,33 @@
 # optional flags. See each for details.
 
 function build () {
-	echo 'Building...'
+	echo 'Cleaning old copy...'
 	rm -rf _copy
-	npx degit saibotsivad/fiddle-11ty-base _copy
+	echo "Grabbing a copy of $1..."
+	npx degit "$1" _copy
+	echo "Merging your site in..."
 	npx ncp ./site ./_copy
+	echo "Installing all dependencies..."
 	cd _copy
 	npm ci
+	echo "Finally building..."
 	npm run build
+}
+
+function watch_site () {
+	echo 'Watching site folder for changes...'
+	npx chokidar-cli "site/**" -c "npx ncp .site ./_copy"
+}
+
+function watch_eleventy () {
+	cd _copy
+	npm run serve
+}
+
+function dev () {
+	echo 'If the _copy does not exist, you will need to run "build" first.'
+	# https://stackoverflow.com/questions/3004811/how-do-you-run-multiple-programs-in-parallel-from-a-bash-script
+	(trap 'kill 0' SIGINT; watch_site & watch_eleventy)
 }
 
 # execute a function in the context of this scope
