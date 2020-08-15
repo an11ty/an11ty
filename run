@@ -1,14 +1,15 @@
 #!/bin/bash
 
 COMMAND=$1
-TEMPLATE=$2
+SITEDIR=$2
+TEMPLATE=$3
 
 # Since this is used as an npx command, first
 # we need to install all the dependencies and
 # add the bins to that PATH.
 # 1. get the path of this actual file
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-cd $DIR
+ROOTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+cd $ROOTDIR
 cd ..
 cd lib/node_modules/an11ty
 # 2. install pinned dependencies
@@ -18,30 +19,34 @@ ACTUALDIR=`pwd`
 PATH=$PATH:$ACTUALDIR/node_modules/.bin
 
 function watch_site () {
+	cd $ROOTDIR
 	echo 'Watching site folder for changes...'
-	npx chokidar-cli "site/**" -c "npx ncp ./site ./_copy"
+	npx chokidar-cli "$SITEDIR/**" -c "npx ncp $SITEDIR ./_copy"
 }
 
 function watch_eleventy () {
-	cd _copy
-	npm run serve
+	cd $ROOTDIR
+	eleventy --watch --serve --input=_copy --output=_site
 }
 
 function build () {
+	cd $ROOTDIR
 	echo 'Cleaning old copy...'
 	rm -rf _copy
 	echo "Grabbing a copy of $TEMPLATE..."
 	npx degit "$TEMPLATE" _copy
 	echo "Merging your site in..."
-	npx ncp ./site ./_copy
+	npx ncp $SITEDIR _copy
 	echo "Installing all dependencies..."
 	cd _copy
 	npm ci
 	echo "Finally building..."
-	npm run build
+	cd $ROOTDIR
+	eleventy --input=_copy --output=_site
 }
 
 function dev () {
+	cd $ROOTDIR
 	echo 'If the _copy does not exist, you will need to run "build" first.'
 	# https://stackoverflow.com/questions/3004811/how-do-you-run-multiple-programs-in-parallel-from-a-bash-script
 	(trap 'kill 0' SIGINT; watch_site & watch_eleventy)
