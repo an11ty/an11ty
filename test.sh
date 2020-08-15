@@ -9,9 +9,13 @@ echo $DIR
 
 ls -l $DIR
 
+cd $DIR
+cd ..
+ls -l
+
 # /Users/saibotsivad/.npm/_npx/16933/bin
 
-PATH=$PATH:$DIR
+# PATH=$PATH:$DIR
 
 
 # WHEREISTHIS=`echo "console.log(require.resolve('a11ty'))" | node`
@@ -26,4 +30,4 @@ PATH=$PATH:$DIR
 
 # ls -l ./node_modules/.bin
 
-ncp --version
+# ncp --version
