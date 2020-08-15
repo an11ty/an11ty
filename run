@@ -27,7 +27,7 @@ function build () {
 
 function watch_site () {
 	echo 'Watching site folder for changes...'
-	npx chokidar-cli "site/**" -c "npx ncp .site ./_copy"
+	npx chokidar-cli "site/**" -c "npx ncp ./site ./_copy"
 }
 
 function watch_eleventy () {
