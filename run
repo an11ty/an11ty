@@ -1,5 +1,8 @@
 #!/bin/bash
 
+COMMAND=$1
+TEMPLATE=$2
+
 # Since this is used as an npx command, first
 # we need to install all the dependencies and
 # add the bins to that PATH.
@@ -27,8 +30,8 @@ function watch_eleventy () {
 function build () {
 	echo 'Cleaning old copy...'
 	rm -rf _copy
-	echo "Grabbing a copy of $1..."
-	npx degit "$1" _copy
+	echo "Grabbing a copy of $TEMPLATE..."
+	npx degit "$TEMPLATE" _copy
 	echo "Merging your site in..."
 	npx ncp ./site ./_copy
 	echo "Installing all dependencies..."
@@ -50,4 +53,4 @@ function demo () {
 }
 
 # execute a function in the context of this scope
-eval "$1"
+eval "$COMMAND"
