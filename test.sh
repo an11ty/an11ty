@@ -7,11 +7,12 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 echo $DIR
 
-ls -l $DIR
+# ls -l $DIR
 
 cd $DIR
 cd ..
 cd lib
+cd node_modules
 ls -l
 
 # /Users/saibotsivad/.npm/_npx/16933/bin
