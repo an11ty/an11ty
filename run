@@ -23,7 +23,7 @@ PATH=$PATH:$ACTUALDIR/node_modules/.bin
 function watch_site () {
 	cd $SITEDIR
 	echo 'Watching site folder for changes...'
-	npx chokidar-cli "$SUBFOLDER/**" -c "npx ncp $SUBFOLDER ./_copy"
+	chokidar "$SUBFOLDER/**" -c "ncp $SUBFOLDER ./_copy"
 }
 
 function watch_eleventy () {
@@ -36,13 +36,13 @@ function build () {
 	echo 'Cleaning old copy...'
 	rm -rf _copy
 	echo "Grabbing a copy of $TEMPLATE..."
-	npx degit "$TEMPLATE" _copy
+	degit "$TEMPLATE" _copy
 	echo "Merging your site in..."
-	npx ncp $SUBFOLDER _copy
+	ncp $SUBFOLDER _copy
 	echo "Installing all dependencies..."
 	cd _copy
 	npm ci
-	echo "Finally building..."
+	echo "Finally building... $SITEDIR"
 	cd $SITEDIR
 	eleventy --input=_copy --output=_site
 }

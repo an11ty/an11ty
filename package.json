@@ -19,6 +19,8 @@
   "homepage": "https://github.com/saibotsivad/an11ty#readme",
   "dependencies": {
     "@11ty/eleventy": "^0.11.0",
+    "chokidar-cli": "^2.1.0",
+    "degit": "^2.8.0",
     "ncp": "^2.0.0"
   }
 }
