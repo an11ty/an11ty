@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-# Make all the installed CLI tools available.
-# PATH=$PATH:./node_modules/.bin
-
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 # echo $DIR
 

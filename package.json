@@ -2,7 +2,7 @@
   "name": "an11ty",
   "version": "0.0.12",
   "description": "Easiest way to start using an 11ty site.",
-  "bin": "./test.sh",
+  "bin": "./run",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/saibotsivad/an11ty.git"
