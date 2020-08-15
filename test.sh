@@ -5,14 +5,15 @@
 
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-echo $DIR
+# echo $DIR
 
 # ls -l $DIR
 
 cd $DIR
 cd ..
-cd lib/node_modules/an11ty/node_modules
-ls -l
+cd lib/node_modules/an11ty
+
+npm i
 
 # /Users/saibotsivad/.npm/_npx/16933/bin
 
@@ -31,4 +32,4 @@ ls -l
 
 # ls -l ./node_modules/.bin
 
-# ncp --version
+ncp --version
