@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Similar to npm scripts, these are the
+# runnable functions of this repo. You
+# would run them with `bash run $NAME`,
+# e.g.
+#
+#     bash run build
+#     bash run start
+#
+# Some runnable functions have their own
+# optional flags. See each for details.
+
+function build () {
+	echo 'Building...'
+	rm -rf _copy
+	npx degit saibotsivad/fiddle-11ty-base _copy
+	npx ncp ./site ./_copy
+	cd _copy
+	npm ci
+	npm run build
+}
+
+# execute a function in the context of this scope
+eval "$@"
