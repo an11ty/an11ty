@@ -9,7 +9,7 @@ cd $DIR
 cd ..
 cd lib/node_modules/an11ty
 # 2. install pinned dependencies
-npm ci
+npm i
 # 3. add to path
 ACTUALDIR=`pwd`
 PATH=$PATH:$ACTUALDIR/node_modules/.bin
