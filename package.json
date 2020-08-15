@@ -1,0 +1,23 @@
+{
+  "name": "an11ty",
+  "version": "0.0.0",
+  "description": "Easiest way to start using an 11ty site.",
+  "bin": "npm run test",
+  "scripts": {
+    "test": "echo \"YOLOOOOOOOOOOO\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saibotsivad/an11ty.git"
+  },
+  "keywords": [
+    "11ty",
+    "eleventy"
+  ],
+  "author": "saibotsivad",
+  "license": "VOL",
+  "bugs": {
+    "url": "https://github.com/saibotsivad/an11ty/issues"
+  },
+  "homepage": "https://github.com/saibotsivad/an11ty#readme"
+}
