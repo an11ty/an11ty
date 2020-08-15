@@ -1,5 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-echo "YOLOOOOOOOOOO" $1 $2 $3 $4
+# Make all the installed CLI tools available.
+# PATH=$PATH:./node_modules/.bin
 
-env
+pwd
+
+ls -l ./node_modules/.bin
+
+ncp --version

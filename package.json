@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/saibotsivad/an11ty/issues"
   },
-  "homepage": "https://github.com/saibotsivad/an11ty#readme"
+  "homepage": "https://github.com/saibotsivad/an11ty#readme",
+  "dependencies": {
+    "ncp": "^2.0.0"
+  }
 }
