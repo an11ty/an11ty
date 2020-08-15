@@ -11,6 +11,7 @@ ls -l $DIR
 
 cd $DIR
 cd ..
+cd lib
 ls -l
 
 # /Users/saibotsivad/.npm/_npx/16933/bin
