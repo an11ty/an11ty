@@ -36,7 +36,7 @@ function build () {
 	echo 'Cleaning old copy...'
 	rm -rf _copy
 	echo "Grabbing a copy of $TEMPLATE..."
-	degit "$TEMPLATE" _copy
+	degit --mode=git "$TEMPLATE" _copy
 	echo "Merging your site in..."
 	ncp $SUBFOLDER _copy
 	echo "Installing all dependencies..."
