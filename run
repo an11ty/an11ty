@@ -7,7 +7,7 @@ const CheapWatch = require('cheap-watch')
 const fs = require('fs')
 const ncp = promisify(require('ncp').ncp)
 const path = require('path')
-const rimraf = promisify(require('rimraf'))
+const premove = require('premove')
 const sade = require('sade')
 
 const copyFile = promisify(fs.copyFile)
@@ -21,7 +21,7 @@ const execute = watch => async opts => {
 	const output = path.resolve(opts.output)
 
 	console.log('Cleaning old copy:', output)
-	await rimraf(output)
+	await premove(output)
 
 	console.log('Locating template:', opts.template)
 	let templateDir

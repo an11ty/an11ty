@@ -1,5 +1,7 @@
 # An 11ty
 
+# [WIP]: Still at `0.x` things are still broken.
+
 Easiest way to start using an [11ty](https://www.11ty.dev/) site.
 
 This part is a CLI tool that merges an `11ty` structured site with an `11ty`

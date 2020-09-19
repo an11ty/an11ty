@@ -2,30 +2,32 @@
   "name": "an11ty",
   "version": "0.0.24",
   "description": "Easiest way to start using an 11ty site.",
-  "bin": "./run",
+  "keywords": [
+    "11ty",
+    "eleventy",
+    "static-site-generator"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/an11ty/an11ty.git"
   },
-  "keywords": [
-    "11ty",
-    "eleventy"
-  ],
   "author": "saibotsivad",
   "license": "VOL",
   "bugs": {
     "url": "https://github.com/an11ty/an11ty/issues"
   },
   "homepage": "https://github.com/an11ty/an11ty#readme",
+  "engines": {
+    "node": ">=8"
+  },
   "dependencies": {
     "cheap-watch": "^1.0.2",
-    "chokidar-cli": "^2.1.0",
-    "degit": "^2.8.0",
     "ncp": "^2.0.0",
-    "rimraf": "^3.0.2",
+    "premove": "^3.0.1",
     "sade": "^1.7.3"
   },
   "peerDependencies": {
     "@11ty/eleventy": "*"
-  }
+  },
+  "bin": "./run"
 }
