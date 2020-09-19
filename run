@@ -1,62 +1,135 @@
-#!/bin/bash
+#!/usr/bin/env node
 
-COMMAND=$1
-SUBFOLDER=$2
-TEMPLATE=$3
+const { version } = require('./package.json')
+const { promisify } = require('util')
+const { spawn } = require('child_process')
+const CheapWatch = require('cheap-watch')
+const fs = require('fs')
+const ncp = promisify(require('ncp').ncp)
+const path = require('path')
+const rimraf = promisify(require('rimraf'))
+const sade = require('sade')
 
-SITEDIR=`pwd`
+const copyFile = promisify(fs.copyFile)
 
-# Since this is used as an npx command, first
-# we need to install all the dependencies and
-# add the bins to that PATH.
-# 1. get the path of this actual file
-THISFILEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-cd $THISFILEDIR
-cd ..
-cd lib/node_modules/an11ty
-# 2. install pinned dependencies
-npm i
-# 3. add to path
-ACTUALDIR=`pwd`
-PATH=$PATH:$ACTUALDIR/node_modules/.bin
+const execute = watch => async opts => {
+	if (!opts.template || !opts.input || !opts.output) {
+		console.error('Template, input, and output are required properties.')
+		process.exit(1)
+	}
+	const input = path.resolve(opts.input)
+	const output = path.resolve(opts.output)
 
-function watch_site () {
-	cd $SITEDIR
-	echo 'Watching site folder for changes...'
-	chokidar "$SUBFOLDER/**" -c "ncp $SUBFOLDER ./_copy"
+	console.log('Cleaning old copy:', output)
+	await rimraf(output)
+
+	console.log('Locating template:', opts.template)
+	let templateDir
+	try {
+		templateDir = path.dirname(require.resolve(opts.template, {
+			paths: [ process.cwd() ]
+		}))
+	} catch (error) {
+		if (error.code === 'MODULE_NOT_FOUND') {
+			console.error('Could not locate the template. TODO add better message')
+		} else {
+			throw error
+		}
+	}
+	if (opts.templatePath) {
+		templateDir = path.join(templateDir, templatePath)
+	}
+
+	console.log('Merging template and your site to:', output)
+	await ncp(templateDir, output)
+
+	console.log('Building...')
+	// since eleventy resolves to the JS and not the bin, we need
+	// to safely locate the bin file
+	let eleventyPath = require.resolve('@11ty/eleventy', {
+		paths: [ process.cwd() ]
+	})
+	let json
+	while (!json) {
+		try {
+			json = JSON.parse(fs.readFileSync(path.join(eleventyPath, 'package.json'), 'utf8'))
+		} catch (error) {
+			if (error.code === 'ENOTDIR' || error.code === 'ENOENT') {
+				eleventyPath = path.resolve(eleventyPath, '..')
+			} else {
+				console.error(error)
+				process.exit(1)
+			}
+		}
+	}
+	const eleventyBin = path.join(eleventyPath, json.bin && json.bin.eleventy)
+	const args = watch
+		? [
+			'--watch',
+			'--serve',
+			opts.port && `--port=${opts.port}` || undefined
+		].filter(Boolean)
+		: []
+
+	const eleventyProcess = new Promise(resolve => {
+		try {
+			const exe = spawn(eleventyBin, args, { cwd: output, stdio: 'inherit' })
+			exe.on('close', code => {
+				if (code) {
+					console.error('Detected error on Eleventy exit...', code)
+				}
+				resolve()
+			})
+		} catch (error) {
+			console.error('Unexpected error while trying to run Eleventy:', error)
+			resolve()
+		}
+	})
+
+	let folderMonitor = Promise.resolve()
+	if (watch) {
+		const watch = new CheapWatch({ dir: input })
+		await watch.init()
+		folderMonitor = new Promise(() => {
+			watch.on('+', event => {
+				console.log('Detected file change (+):', event.path)
+				fs.copyFileSync(
+					path.join(input, event.path),
+					path.join(output, event.path)
+				)
+			})
+			watch.on('-', event => {
+				console.log('Detected file change (-):', event.path)
+				fs.unlinkSync(path.join(output, event.path))
+			})
+		})
+	}
+
+	await Promise.all([ eleventyProcess, folderMonitor ])
+
+	console.log('Everything is done!')
 }
 
-function watch_eleventy () {
-	cd $SITEDIR/_copy
-	eleventy --watch --serve
-}
+const prog = sade('an11ty')
 
-function build () {
-	cd $SITEDIR
-	echo 'Cleaning old copy...'
-	rm -rf _copy
-	echo "Grabbing a copy of $TEMPLATE..."
-	degit --mode=git "$TEMPLATE" _copy
-	echo "Merging your site in..."
-	ncp $SUBFOLDER _copy
-	echo "Installing all dependencies..."
-	cd _copy
-	npm ci
-	echo "Finally building... $SITEDIR"
-	eleventy
-}
+prog
+	.version(version)
+	.option('--input, -i', 'Path to folder containing site content and settings.', 'site')
+	.option('--output, -o', 'Path to temporary folder containing copies and final compiled output.', '_copy')
+	.option('--template, -t', 'Provide the module name of the installed template.')
+	.option('--templatePath, -T', 'If the template site files are in a sub-folder, specify the sub-folder here.')
 
-function dev () {
-	cd $SITEDIR
-	echo 'If the _copy does not exist, you will need to run "build" first.'
-	# https://stackoverflow.com/questions/3004811/how-do-you-run-multiple-programs-in-parallel-from-a-bash-script
-	(trap 'kill 0' SIGINT; watch_site & watch_eleventy)
-}
+prog
+	.command('build')
+	.describe('Build the entire static site and all assets.')
+	.example('build --input=site --output=_copy --template=an11ty-template')
+	.action(execute(false))
 
-function demo () {
-	echo 'HELLO WORLD????'
-	ncp --version
-}
+prog
+	.command('dev')
+	.option('--port, -p', 'Port to serve the static site.', '8080')
+	.describe('Build and serve the site and all assets and watch for changes.')
+	.example('build --input=site --output=_copy --template=an11ty-template --port=8080')
+	.action(execute(true))
 
-# execute a function in the context of this scope
-eval "$COMMAND"
+prog.parse(process.argv)
