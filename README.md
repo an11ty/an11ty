@@ -1,4 +1,4 @@
-# An 11ty
+# An11ty: An Eleventy Site
 
 # [WIP]: Still at `0.x` things are still broken.
 
@@ -56,11 +56,11 @@ Flags available for all commands:
 
 - **`--help`** - Get help on any of the commands.
 - **`--input, -i`** - The input folder, this would be your site content. (Default: `site`)
-- **`--output, -o`** - The output folder where the merged content goes. The
-	built `11ty` output exists as a subfolder of this, named `_site`. (Default: `_copy`)
-- **`--template, -t`** - *(Required)* The module name of your installed template.
-- **`--templatePath, -T`** - If the template files are in a sub-folder, you will
-	need to set the folder name here.
+- **`--template, -t`** - *(Required)* The path to your installed template. You can
+	specify multiple of these, and they will be merged one on top of the other,
+	first to last.
+- **`--merged, -m`** - The folder where the merged content goes. (Default: `_merged`)
+- **`--output, -o`** - The folder where the built 11ty conten goes. (Default: `_site`)
 
 Flags available for `dev` command:
 

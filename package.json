@@ -22,12 +22,10 @@
   },
   "dependencies": {
     "cheap-watch": "^1.0.2",
+    "mergefs": "^1.0.2",
     "ncp": "^2.0.0",
     "premove": "^3.0.1",
     "sade": "^1.7.3"
-  },
-  "peerDependencies": {
-    "@11ty/eleventy": "*"
   },
   "bin": "./run"
 }
