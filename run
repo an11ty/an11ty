@@ -33,6 +33,19 @@ const locateEleventyBin = () => {
 	return path.join(eleventyPath, json.bin && json.bin.eleventy)
 }
 
+const loadOrIgnore = filepath => {
+	try {
+		return fs.readFileSync(filepath, 'utf8')
+	} catch (error) {
+		if (error.code === 'ENOTDIR' || error.code === 'ENOENT') {
+			return undefined
+		} else {
+			console.error(`Error while loading file: ${filepath}`, error)
+			process.exit(1)
+		}
+	}
+}
+
 // Created on every run, these are `await`ed at the end so be
 // careful in how you add and watch them.
 const folderMonitors = []
@@ -84,6 +97,16 @@ const execute = watchSite => async opts => {
 				input
 			]
 		})
+		const append = (from, to) => {
+			const fromString = loadOrIgnore(from)
+			let toString = loadOrIgnore(to)
+			if (fromString) {
+				toString = (toString || '') + '\n' + fromString
+				fs.writeFileSync(to, toString, 'utf8')
+			}
+		}
+		append(path.join(input, '.an11ty-eleventyignore'), path.join(merged, '.eleventyignore'))
+		append(path.join(input, '.an11ty-gitignore'), path.join(merged, '.gitignore'))
 	}
 
 	console.log(`Merging ${templates.length} template${templates.length > 1 ? 's' : ''} and your site to:`, merged)
