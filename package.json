@@ -3,6 +3,7 @@
   "version": "0.0.26",
   "description": "Easiest way to start using an 11ty site.",
   "keywords": [
+    "an11ty",
     "11ty",
     "eleventy",
     "static-site-generator"

@@ -1,22 +1,21 @@
 # An11ty: An Eleventy Site
 
-# [WIP]: Still at `0.x` things are still broken.
-
 Easiest way to start using an [11ty](https://www.11ty.dev/) site.
 
-This part is a CLI tool that merges an `11ty` structured site with an `11ty`
-structured template, and then builds the site using the `11ty` tool.
+An11ty is an opinionated merge tool, which merges one or more `11ty`
+structured template folders together, with an `11ty` structured site,
+and then builds the site using the `11ty` CLI tooling.
 
 ## How to Use
 
-The fastest way to get started is to use `degit` to fetch
-[an11ty/starter](https://github.com/an11ty/starter):
+The fastest way to get started is probably to use `degit` to fetch
+[an11ty/starter](https://github.com/an11ty/starter), which is a
+simple starter website, using a single template:
 
 ```bash
 npx degit an11ty/starter my-site
 cd my-site
 npm install
-npm run build
 ```
 
 You'll notice that this starter project only has a very few
@@ -32,21 +31,29 @@ site
       |- metadata.js
 ```
 
-Your site content (and template/setting overrides) live inside the `site` folder.
+Your site content (and any template/setting overrides) live inside
+the `site` folder.
 
-The metadata about the site (such as title and author name) live inside the `site/_data/metadata.js` file.
+Like a normal `11ty` site, the metadata about the site (such as title
+and author name) live inside the `site/_data/metadata.js` file.
 
-Make some changes to the `site/index.md` file, then simply:
+To start development, simply run:
 
 ```bash
 npm run dev
 ```
 
-This will build the site and launch a local server to view your new site!
+This will merge the template (from the `node_modules` folder) and the
+site into `_merge`, and then build the site into `_site` and launch
+a local server to view your new site!
+
+(It will also watch the site folder and all template folders for any
+changes, and then re-merge and re-build.)
 
 ## Commands
 
-Only a limited set of `11ty` commands are supported:
+Because `an11ty` is meant to be a little more opinionated, it only
+supportes a limited set of `11ty` commands:
 
 - **`an11ty build`** - Build the whole site into the output folder.
 - **`an11ty dev`** - Build the whole site into the output folder, watch
@@ -80,3 +87,8 @@ find that other existing templates will work with little extra effort.
 
 For more notes on building a good template, have a look at
 [an11ty-template](https://github.com/saibotsivad/an11ty-template).
+
+## License
+
+This software is published and released under the
+[Very Open License](http://veryopenlicense.com).
